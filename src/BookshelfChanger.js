@@ -7,6 +7,7 @@ export class BookshelfChangerBtn extends Component {
             <div className="book-shelf-changer">
                 <select
                     onChange={this.props.changeShelf}
+                    value="none"
                 >
                     <option value="move" disabled>Move to...</option>
                     <option value="currentlyReading">Currently Reading</option>

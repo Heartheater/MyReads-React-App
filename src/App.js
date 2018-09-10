@@ -1,7 +1,8 @@
 import React from 'react';
 // import * as BooksAPI from './BooksAPI'
 import './App.css';
-//import { SearchPage } from './SearchPage';
+import { SearchPage } from './SearchPage';
+// eslint-disable-next-line
 import { HomePage } from './HomePage';
 import * as BooksAPI from './BooksAPI';
 
@@ -21,21 +22,41 @@ class BooksApp extends React.Component {
     }
 
     //update a book's reading status
-    changeShelf(book, shelf) {
+    changeShelf = (book, shelf) => {
         console.log(`Moving "${book.title}" to ${shelf}`);
-        //BooksAPI.update(book, shelf);
+        BooksAPI.update(book, shelf);
+
+        /*
+        BooksAPI.getAll()
+            .then(list => {
+                this.setState({ allBooks: list });
+            });
+            */
     }
 
+    searchBooks = (query, maxResults) => {
+        console.log(`Searching ${query}`);
+        BooksAPI.search(query, maxResults);
+    }
+    
 
     render() {
         return (
             <div className="app">
-                {/*<SearchPage />*/}
+                {/*
+                                <SearchPage
+                    allBooks={this.state.allBooks}
+                    search={this.searchBooks}
+                />
+                 */}
                 <HomePage
                     allBooks={this.state.allBooks}
                     changeShelf={this.changeShelf}
                 />
                 {console.log(this.state.allBooks)}
+
+
+
             </div>
         );
     }

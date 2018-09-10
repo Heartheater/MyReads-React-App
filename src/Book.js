@@ -3,6 +3,19 @@ import { BookshelfChangerBtn } from './BookshelfChanger';
 
 
 export class Book extends Component {
+    /* try changing the bookshelf's state instead...
+    state = {
+        shelf: this.props.book.shelf,
+        prevShelf: this.props.book.shelf
+
+    }
+    componentDidUpdate() {
+        if (this.state.shelf !== this.state.prevShelf) {
+            console.log(this.state.shelf, " is not equal to ", this.state.prevShelf);
+            this.setState({ prevShelf: this.state.shelf });
+        }
+    }
+    */
     render() {
         return (
                 <div className="book">
@@ -14,22 +27,22 @@ export class Book extends Component {
                             backgroundImage: `url('${this.props.book.imageLinks.smallThumbnail}')`
                         }}
                     >
-                        {/*<BookshelfChangerBtn changeShelf={this.props.changeShelf} />*/}
-                        <div className="book-shelf-changer">
-                            <select
-                                onChange={
-                                    () => {
-                                        this.props.changeShelf(this.props.book, this.props.book.shelf)
+                        
+                        <BookshelfChangerBtn
+                            changeShelf={
+                                (e) => {
+                                    //makes sure the book's shelf has actually changed before updating
+                                    if (this.props.book.shelf !== e.target.value) {
+                                        this.props.changeShelf(this.props.book, e.target.value);
+                                        //this.setState({ shelf: e.target.value });
+
                                     }
+
                                 }
-                            >
-                                <option value="move" disabled>Move to...</option>
-                                <option value="currentlyReading">Currently Reading</option>
-                                <option value="wantToRead">Want to Read</option>
-                                <option value="read">Read</option>
-                                <option value="none">None</option>
-                            </select>
-                        </div>
+                            }
+                        />
+
+                       
                     </div>
                         
 
