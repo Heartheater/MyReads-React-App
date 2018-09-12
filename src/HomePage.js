@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-// eslint-disable-next-line
 import { Bookshelf } from './Bookshelf';
 import { Book } from './Book';
+import { Link } from 'react-router-dom';
+
 export class HomePage extends Component {
     render() {
         return (
@@ -19,6 +20,7 @@ export class HomePage extends Component {
                                             <Book
                                                 book={book}
                                                 changeShelf={this.props.changeShelf}
+                                                showButton="true"
                                             />
                                         </li>
                                     );
@@ -34,6 +36,7 @@ export class HomePage extends Component {
                                         <Book
                                             book={book}
                                             changeShelf={this.props.changeShelf}
+                                            showButton="true"
                                         />
 
                                     </li>
@@ -50,6 +53,7 @@ export class HomePage extends Component {
                                         <Book
                                             book={book}
                                             changeShelf={this.props.changeShelf}
+                                            showButton="true"
                                         />
 
                                     </li>
@@ -58,9 +62,9 @@ export class HomePage extends Component {
                     </Bookshelf>
                 </div>
                 <div className="open-search">
-                    <a onClick={() => this.setState({ showSearchPage: true })}>
+                    <Link to='/search'>
                         Add a book
-                    </a>
+                    </Link>
                 </div>
             </div>
             );

@@ -2,7 +2,8 @@ import React from 'react';
 import { BookshelfChangerBtn } from './BookshelfChanger';
 
 
-export function Book (props) {
+export function Book(props) {
+
     return (
         <div className="book">
             <div className="book-top">
@@ -13,7 +14,8 @@ export function Book (props) {
                         backgroundImage: `url('${props.book.imageLinks.smallThumbnail}')`
                     }}
                 >
-                        
+                      
+                {props.showButton ? (
                     <BookshelfChangerBtn
                         changeShelf={
                             (e) => {
@@ -24,6 +26,7 @@ export function Book (props) {
                             }
                         }
                     />
+                ) : null}
                        
                 </div>
             </div>
