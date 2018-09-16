@@ -1,12 +1,11 @@
 import React from 'react';
-// import * as BooksAPI from './BooksAPI'
 import './App.css';
 import { SearchPage } from './SearchPage';
 import { HomePage } from './HomePage';
 import * as BooksAPI from './BooksAPI';
 import { Route } from 'react-router-dom';
 
-class BooksApp extends React.Component {
+export default class BooksApp extends React.Component {
     state = {
         showSearchPage: false,
         allBooks: []
@@ -25,7 +24,6 @@ class BooksApp extends React.Component {
     changeShelf = (book, shelf) => {
         console.log(`Moving "${book.title}" to ${shelf}`);
         BooksAPI.update(book, shelf);
-
         //this re-renders the app
         BooksAPI.getAll()
             .then(list => {
@@ -33,8 +31,10 @@ class BooksApp extends React.Component {
                 //books have changed shelves
                 this.setState({ allBooks: list });
             });
+        return book.shelf = shelf;
     }
 
+    //search for books
     searchBooks = (query, maxResults) => {
         console.log(`Searching ${query}`);
         BooksAPI.search(query, maxResults);
@@ -59,8 +59,9 @@ class BooksApp extends React.Component {
                 <Route exact path='/search' render={({ history }) => {
                     return (
                         <SearchPage
-                            allBooks={this.state.allBooks}
+                            shelvedBooks={this.state.allBooks}
                             search={this.searchBooks}
+                            addShelf={this.changeShelf}
                             back={() => history.push('/')}
                         />
                     );
@@ -72,6 +73,3 @@ class BooksApp extends React.Component {
     }
 }
 
-//exports BooksApp under the name "defualt"
-//eqivalent to   "export {BooksApp as default}"
-export { BooksApp as default };

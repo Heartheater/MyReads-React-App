@@ -1,49 +1,56 @@
 import React, { Component } from 'react';
-//escapeRegEx escapes special characters
 import escapeRegEx from 'escape-string-regexp';
 import sortBy from 'sort-by';
 import PropTypes from 'prop-types';
 import { Book } from './Book';
-
-
+import { search } from './BooksAPI';
 import { BooksGrid } from './BooksGrid';
 
 export class SearchPage extends Component {
     static propTypes = {
-        allBooks: PropTypes.array.isRequired //requires an array type
+        addShelf: PropTypes.func.isRequired,
+        back: PropTypes.func.isRequired,
+        search: PropTypes.func.isRequired
     }
     state = {
-        query: ''
+        query: '',
+        matchedBooks: [],
+        foundResults: true
     }
 
     updateQuery(query) {
         this.setState({ query: query });
+        //calls searchBooks when the input field changes
+        return this.searchBooks(query);
+    }
+
+    searchBooks = (query) => {
+        //return an empty array if query is empty
+        if (query === " " || !query) {
+            return this.setState({ matchedBooks: [], foundResults: false });
+        }
+        //escape special characters
+        query = escapeRegEx(query).toLowerCase();
+
+        return search(query)
+            .then(match => {
+                if (!match.error && query) {
+                    match.sort(sortBy('authors', 'title'));
+                    return this.setState({ matchedBooks: match, foundResults: true });
+                }
+                else {
+                    //if the search gave an error return empty array
+                    return this.setState({ matchedBooks: [], foundResults: false });
+                }
+            })
+            .catch(err => console.error(`Error searching for book: ${err}`));
     }
 
     render() {
-        //visibleBooks holds all the returned search results and currently visible books
-        let visibleBooks = [];
-        //if there's a value in the input bar
-        if (this.state.query) {
-            //holds the input string and escapes special characters, 'i' ignores case
-            let input = new RegExp(escapeRegEx(this.state.query), 'i');
-            visibleBooks = this.props.allBooks.filter((book) => {
-                //filter through all books and find a match with author or title
-                return input.test(book.authors) || input.test(book.title);
-            });
-        }
-        else {//if there's no value in the input bar
-            visibleBooks = [];
-        }
-
-        //sortBy allows to sort by a specific property
-        visibleBooks.sort(sortBy('authors', 'title'));
-        
         return (
             <div className="search-books">
                 <div className="search-books-bar">
-
-                    <a className="close-search" onClick={this.props.back}>
+                    <a className="close-search" onClick={this.props.back} role="link">
                         Back
                     </a>
 
@@ -54,27 +61,45 @@ export class SearchPage extends Component {
                             onChange={
                                 (e) => {
                                     //when input value changes, call updateQuery and pass the new value
-                                    this.updateQuery(e.target.value);
+                                    return this.updateQuery(e.target.value);
                                 }}
-                        />
+                            aria-label="search for books"
 
-                        {/*JSON.stringify(this.state)*/}
+                        />
                     </div>
                 </div>
 
-
-
                 <div className="search-books-results">
                     <BooksGrid>
-                        {visibleBooks.map((book, i) => {
-                            return (
-                                <li key={`result_${i}`} >
-                                    <Book book={book} />
-                                </li>
-                            );
-                        })
-                        }
-                    </BooksGrid>
+                        {//first checks if there are any results to show
+                            this.state.foundResults ?
+                                //map through array of results
+                                this.state.matchedBooks.map((book, i) => {
+                                    //set default bookshelf
+                                    book.shelf = "none";
+
+                                    //map through already shelved books to find any matching books
+                                    this.props.shelvedBooks.map(shelvedBook => {
+                                        if (shelvedBook.id === book.id) {
+                                            book.shelf = shelvedBook.shelf;
+                                            return book.shelf;
+                                        }
+                                    });
+
+                                    return (
+                                        <li key={`searchResult_${i}`} >
+                                            <Book
+                                                book={book}
+                                                changeShelf={this.props.addShelf}
+                                                shelf={book.shelf}
+                                            />
+                                        </li>
+                                    );
+                                })
+                                //or if there are no results
+                            : <li><p id="no-results"> No Results Found </p></li>
+                         }
+                        </BooksGrid>
                 </div>
             </div>
         );
