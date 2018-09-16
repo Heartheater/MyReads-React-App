@@ -82,8 +82,8 @@ export class SearchPage extends Component {
                                     this.props.shelvedBooks.map(shelvedBook => {
                                         if (shelvedBook.id === book.id) {
                                             book.shelf = shelvedBook.shelf;
-                                            return book.shelf;
                                         }
+                                        return book.shelf;
                                     });
 
                                     return (
