@@ -7,20 +7,19 @@ body {
 }
 
 body, .app {
-    background: #c8cacf;
+    background: #ecedf0;
 }
 
 /* main page */
 
 .list-books-title {
     padding: 10px 0;
-    background: #8b3434;
+    background: #704242;
     text-align: center;
 }
 
 .list-books-title h1 {
-    font-family: 'Trebuchet MS', Arial, sans-serif;
-    letter-spacing: 2px;
+    letter-spacing: 2.5px;
     font-weight: 400;
     margin: 0;
     color: white;
@@ -60,13 +59,16 @@ body, .app {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: #494f63;
+    background: #845454;
     background-image: url('./icons/add.svg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 28px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     font-size: 0;
+}
+a:hover{
+    cursor: pointer;
 }
 
 /* search page */
@@ -112,6 +114,10 @@ body, .app {
     padding: 80px 10px 20px;
 }
 
+#no-results{
+    font-size: 18px;
+}
+
 /* books grid */
 
 .books-grid {
@@ -123,26 +129,25 @@ body, .app {
     flex-wrap: wrap;
 }
 
-    .books-grid li {
-        padding: 10px 15px;
-        text-align: left;
-    }
+.books-grid li {
+    padding: 10px 15px;
+    text-align: left;
+}
 
 .book {
     width: 140px;
 }
 
-.book-title,
+.book-title {
+    font-size: 0.9em;
+    margin-top: 10px;
+    font-weight: normal;
+}
+
 .book-authors {
     font-size: 0.8em;
-}
-
-.book-title {
-    margin-top: 10px;
-}
-
-.book-authors {
-    color: #999;
+    font-style: italic;
+    color: #9f8585;
 }
 
 .book-top {
@@ -159,7 +164,7 @@ body, .app {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #525a75;
+    background: #a24a58;
     background-image: url('./icons/arrow-drop-down.svg');
     background-repeat: no-repeat;
     background-position: center;
