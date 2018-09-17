@@ -12,7 +12,7 @@ You can add new books to these shelves by searching for them using the search fu
 
 ## Using the Search
 
-MyReads app uses a fixed set of cached search results and is limited to a particular set of search terms, which can be found in [SEARCH_TERMS.md](SEARCH_TERMS.md). 
+MyReads app uses a fixed set of cached search results and is limited to a particular set of search terms, which can be found in `SEARCH_TERMS.md`. 
 
 
 ## Credits
